@@ -89,29 +89,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // キャラ別のサンプルセリフ（適宜追加可能）
         const phrases = {
-          'TORO': [
-            '君のためなら、夜空の星だって摘んでみせる。',
-            '甘い声で囁くのは、いつだって君だけ。'
-          ],
-          'MAKI': [
-            '騒がしい世界？ なら俺が静寂をくれてやる。',
-            '耳を澄ませば、君の心の鼓動が聞こえる。'
-          ],
-          'MIRA': [
-            '勝利の笑顔は、君と見るためにある。',
-            '遠くても、君の背中は見逃さない。'
-          ],
-          'NEGI': [
-            '世界を抱きしめるように、君を守るよ。',
-            '君の不安は、俺が全部拭ってあげる。'
-          ]
+          'TORO': '今夜は君だけに囁いてあげるよ。',
+          'MAKI': '騒がしい世界？ なら俺が静寂をくれてやる。',
+          'MIRA': '勝利の笑顔は、君と見るためにある。',
+          'NEGI': '世界を抱きしめるように、君を守るよ。'
         };
 
-        const pool = phrases[name] || [
-          'その瞳に、迷いは似合わない。',
-          '今夜は君だけのために歌おう。'
-        ];
-        const phrase = pool[Math.floor(Math.random() * pool.length)];
+        const phrase = phrases[name] || 'その瞳に、迷いは似合わない。';
 
         const modalBg = document.createElement('div');
         modalBg.className = 'modal-bg';
