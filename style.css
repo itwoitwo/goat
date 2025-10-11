@@ -240,6 +240,58 @@ header {
   cursor: pointer;
 }
 
+.interior-section {
+  max-width: 900px;
+  margin: 64px auto 0 auto;
+  text-align: center;
+}
+.interior-section h2 {
+  font-size: 2.2rem;
+  color: #6a5a8a;
+  margin: 0 0 18px 0;
+  letter-spacing: 0.08em;
+}
+.interior-copy {
+  color: #e6e6fa;
+  font-size: 1.1rem;
+  margin-bottom: 32px;
+  letter-spacing: 0.04em;
+}
+.interior-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px;
+  justify-items: center;
+}
+.interior-card {
+  background: rgba(40, 0, 60, 0.85);
+  border-radius: 16px;
+  box-shadow: 0 0 18px #23232b55;
+  padding: 12px;
+  transition: transform 0.3s, box-shadow 0.3s;
+  cursor: pointer;
+}
+.interior-card:hover {
+  transform: scale(1.04) rotate(-1deg);
+  box-shadow: 0 0 32px #a020f0cc;
+}
+.interior-img {
+  width: 320px;
+  height: 240px;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 2px solid #6a5a8a;
+  background: #181820;
+  transition: box-shadow 0.3s;
+  box-shadow: 0 0 12px #23232baa;
+  cursor: pointer;
+  display: block;
+}
+@media (max-width: 700px) {
+  .interior-img { width: 100%; height: auto; }
+  .interior-grid { grid-template-columns: 1fr; }
+}
+
 footer {
   background: #1a0026;
   color: #6a5a8a;
