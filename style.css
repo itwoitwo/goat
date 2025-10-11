@@ -311,3 +311,106 @@ footer a {
 footer a:hover {
   color: #6a5a8a;
 }
+@media (max-width: 700px) {
+  body {
+    font-size: 15px;
+    padding: 0;
+  }
+  header {
+    padding: 24px 0 12px 0;
+  }
+  .logo {
+    max-width: 98vw;
+    margin-bottom: 8px;
+  }
+  .main-copy {
+    font-size: 1.1rem;
+    margin: 32px 0 8px 0;
+    padding: 0 8px;
+  }
+  .event-date, .hashtag {
+    font-size: 1rem;
+  }
+  .cast-section {
+    max-width: 100vw;
+    margin: 0 auto 0 auto;
+    padding: 0 4vw;
+  }
+  .cast-section h2 {
+    font-size: 1.3rem;
+    margin-bottom: 12px;
+  }
+  .cast-list {
+    gap: 32px;
+    margin-top: 24px;
+  }
+  .cast-row {
+    flex-direction: column;
+    gap: 24px;
+  }
+  .cast-card {
+    width: 90vw;
+    min-width: 0;
+    padding: 16px 8px 12px 8px;
+  }
+  .cast-img {
+    width: 60vw;
+    height: 60vw;
+    max-width: 220px;
+    max-height: 220px;
+  }
+  .ad-section {
+    margin: 32px 0 16px 0;
+  }
+  .ad-banner {
+    width: 90vw;
+    height: 90vw;
+    max-width: 220px;
+    max-height: 220px;
+  }
+  .interior-section {
+    max-width: 100vw;
+    margin: 32px auto 0 auto;
+    padding: 0 4vw;
+  }
+  .interior-section h2 {
+    font-size: 1.3rem;
+    margin-bottom: 12px;
+  }
+  .interior-copy {
+    font-size: 0.95rem;
+    margin-bottom: 18px;
+  }
+  .interior-grid {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+  .interior-card {
+    padding: 6px;
+  }
+  .interior-img {
+    width: 90vw;
+    height: 67vw;
+    max-width: 320px;
+    max-height: 240px;
+  }
+  .entry-section {
+    margin-top: 32px;
+    margin-bottom: 24px;
+  }
+  .entry-btn {
+    font-size: 1.05rem;
+    padding: 14px 18vw;
+    border-radius: 18px;
+  }
+  footer {
+    font-size: 0.95rem;
+    padding: 16px 0 10px 0;
+  }
+}
+@media (max-width: 700px) {
+  .cast-row {
+    flex-direction: column !important;
+    gap: 24px;
+  }
+}
