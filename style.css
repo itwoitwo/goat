@@ -18,7 +18,7 @@ header {
   color: #e6e6fa;
   font-weight: bold;
   letter-spacing: 0.08em;
-  margin: 64px 0 10px 0;
+  margin: 48px 0 32px 0;
   text-shadow: 0 0 12px #a020f0cc;
   opacity: 0;
   animation: fadeInCopy 1.2s 0.3s forwards;
