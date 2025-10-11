@@ -77,21 +77,71 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
   
-    // CASTポートレートカードクリックで拡大表示
+    // CASTポートレートカードクリックで拡大表示（セリフオーバーレイ付き）
     document.querySelectorAll('.cast-card-portrait').forEach(card => {
       card.addEventListener('click', function(e) {
         e.stopPropagation();
         const img = this.querySelector('.cast-img-portrait');
         if (!img) return;
+
+        // キャスト名取得（存在しない場合は画像のaltを利用）
+        const name = (this.querySelector('.cast-name-portrait') && this.querySelector('.cast-name-portrait').textContent.trim()) || img.alt || 'CAST';
+
+        // キャラ別のサンプルセリフ（適宜追加可能）
+        const phrases = {
+          'TORO': [
+            '君のためなら、夜空の星だって摘んでみせる。',
+            '甘い声で囁くのは、いつだって君だけ。'
+          ],
+          'MAKI': [
+            '騒がしい世界？ なら俺が静寂をくれてやる。',
+            '耳を澄ませば、君の心の鼓動が聞こえる。'
+          ],
+          'MIRA': [
+            '勝利の笑顔は、君と見るためにある。',
+            '遠くても、君の背中は見逃さない。'
+          ],
+          'NEGI': [
+            '世界を抱きしめるように、君を守るよ。',
+            '君の不安は、俺が全部拭ってあげる。'
+          ]
+        };
+
+        const pool = phrases[name] || [
+          'その瞳に、迷いは似合わない。',
+          '今夜は君だけのために歌おう。'
+        ];
+        const phrase = pool[Math.floor(Math.random() * pool.length)];
+
         const modalBg = document.createElement('div');
         modalBg.className = 'modal-bg';
+
+        // modalCard: 画像とキャプションをまとわせるラッパー（相対配置）
+        const modalCard = document.createElement('div');
+        modalCard.className = 'modal-card';
+
         const modalImg = document.createElement('img');
         modalImg.className = 'modal-img';
         modalImg.src = img.src;
         modalImg.alt = img.alt;
-        modalBg.appendChild(modalImg);
+
+        // キャプション要素（画像の上に重なる）
+        const caption = document.createElement('div');
+        caption.className = 'modal-caption';
+        const nameEl = document.createElement('div');
+        nameEl.className = 'modal-name';
+        nameEl.textContent = name;
+        const quoteEl = document.createElement('div');
+        quoteEl.className = 'modal-quote';
+        quoteEl.textContent = `「${phrase}」`;
+        caption.appendChild(nameEl);
+        caption.appendChild(quoteEl);
+
+        modalCard.appendChild(modalImg);
+        modalCard.appendChild(caption);
+        modalBg.appendChild(modalCard);
         document.body.appendChild(modalBg);
-  
+
         modalBg.addEventListener('click', () => {
           modalBg.remove();
         });

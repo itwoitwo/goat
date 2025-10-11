@@ -228,16 +228,98 @@ header {
   from { opacity: 0; }
   to { opacity: 1; }
 }
-.modal-img {
-  max-width: 80vw;
-  max-height: 80vh;
+
+/* modal内にカードラッパーを作り、キャプションを画像上に重ねる */
+.modal-card {
+  position: relative;
+  display: inline-block;
   border-radius: 24px;
-  box-shadow: 0 0 48px #23232bcc;
+  overflow: hidden; /* キャプションが画像の下部に被るようにする */
+  box-shadow: 0 0 64px #23232bcc;
   border: 4px solid #bbaaff;
   background: #1a0026;
+  /* 大きめ表示を優先（横幅が狭い場合は高さ基準で縮小） */
+  max-width: 92vw;
+  max-height: 92vh;
 }
+
+/* 画像はカード内で表示（余白等はカード側で管理） */
+.modal-img {
+  display: block;
+  max-width: 92vw;
+  max-height: 84vh; /* キャプション領域を確保するため若干余裕を持たせる */
+  width: auto;
+  height: auto;
+  border-radius: 0; /* カードでラウンドするので個別にしない */
+  object-fit: cover;
+}
+
+/* 下部約1/3を覆うキャプション（グラデ＋ブラーで高級感） */
+.modal-caption {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 22px 28px;
+  /* 下から約1/3〜40%を覆うグラデーションを使用（大きめ表示でも被りが自然） */
+  background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(10,6,20,0.5) 30%, rgba(10,6,20,0.9) 100%);
+  color: #ffffff;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  box-sizing: border-box;
+  min-height: 120px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 8px;
+}
+
+/* 名前とセリフの見た目調整（大きめ表示向けに拡大） */
+.modal-name {
+  font-weight: 800;
+  font-size: 1.6rem;
+  color: #fff7ee;
+  text-shadow: 0 4px 28px rgba(160,32,240,0.35);
+  letter-spacing: 0.06em;
+}
+
+.modal-quote {
+  font-style: italic;
+  color: #e6e6fa;
+  font-size: 1.15rem;
+  line-height: 1.4;
+  opacity: 0;
+  transform: translateY(10px);
+  animation: slideUpCaption 0.36s 0.04s forwards cubic-bezier(.2,.9,.2,1);
+  text-shadow: 0 2px 12px rgba(0,0,0,0.45);
+}
+
+/* キャプション出現アニメーション */
+@keyframes slideUpCaption {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* クリックで閉じられる背景のカーソルはそのまま維持 */
 .modal-bg {
   cursor: pointer;
+}
+
+/* モバイルではキャプションの余白とフォントを調整 */
+@media (max-width: 700px) {
+  .modal-card {
+    max-width: 96vw;
+    max-height: 96vh;
+  }
+  .modal-img {
+    max-width: 96vw;
+    max-height: 78vh;
+  }
+  .modal-caption {
+    padding: 14px 16px;
+    min-height: 90px;
+  }
+  .modal-name { font-size: 1.15rem; }
+  .modal-quote { font-size: 1rem; }
 }
 
 .interior-section {
