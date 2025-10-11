@@ -56,25 +56,46 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 
-  // INTERIOR IMAGE 画像クリックで拡大表示
-  document.querySelectorAll('.interior-card').forEach(card => {
-    card.addEventListener('click', function(e) {
-      e.stopPropagation();
-      const img = this.querySelector('.interior-img');
-      if (!img) return;
-      const modalBg = document.createElement('div');
-      modalBg.className = 'modal-bg';
-      const modalImg = document.createElement('img');
-      modalImg.className = 'modal-img';
-      modalImg.src = img.src;
-      modalImg.alt = img.alt;
-      modalBg.appendChild(modalImg);
-      document.body.appendChild(modalBg);
-
-      modalBg.addEventListener('click', () => {
-        modalBg.remove();
+    // INTERIOR IMAGE 画像クリックで拡大表示
+    document.querySelectorAll('.interior-card').forEach(card => {
+      card.addEventListener('click', function(e) {
+        e.stopPropagation();
+        const img = this.querySelector('.interior-img');
+        if (!img) return;
+        const modalBg = document.createElement('div');
+        modalBg.className = 'modal-bg';
+        const modalImg = document.createElement('img');
+        modalImg.className = 'modal-img';
+        modalImg.src = img.src;
+        modalImg.alt = img.alt;
+        modalBg.appendChild(modalImg);
+        document.body.appendChild(modalBg);
+  
+        modalBg.addEventListener('click', () => {
+          modalBg.remove();
+        });
       });
     });
-  });
-
-  // CSSで .visible を使った追加アニメーションを有効化
+  
+    // CASTポートレートカードクリックで拡大表示
+    document.querySelectorAll('.cast-card-portrait').forEach(card => {
+      card.addEventListener('click', function(e) {
+        e.stopPropagation();
+        const img = this.querySelector('.cast-img-portrait');
+        if (!img) return;
+        const modalBg = document.createElement('div');
+        modalBg.className = 'modal-bg';
+        const modalImg = document.createElement('img');
+        modalImg.className = 'modal-img';
+        modalImg.src = img.src;
+        modalImg.alt = img.alt;
+        modalBg.appendChild(modalImg);
+        document.body.appendChild(modalBg);
+  
+        modalBg.addEventListener('click', () => {
+          modalBg.remove();
+        });
+      });
+    });
+  
+    // CSSで .visible を使った追加アニメーションを有効化
