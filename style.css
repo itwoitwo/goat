@@ -3,7 +3,7 @@ body {
     linear-gradient(135deg, #181820cc 0%, #23232bcc 100%),
     url('ad.png') center center/cover no-repeat fixed;
   color: #e6e6fa;
-  font-family: 'Segoe UI', 'Meiryo', sans-serif;
+  font-family: Cambria, serif;
   margin: 0;
   min-height: 100vh;
 }
@@ -22,7 +22,7 @@ header {
   text-shadow: 0 0 12px #a020f0cc;
   opacity: 0;
   animation: fadeInCopy 1.2s 0.3s forwards;
-  font-family: 'Meiryo', 'Segoe UI', sans-serif;
+  font-family: Cambria, serif;
 }
 
 @keyframes fadeInCopy {
@@ -594,8 +594,11 @@ footer a:hover {
     gap: 24px;
   }
   .cast-card-portrait {
-    max-width: 98vw;
-    padding: 16px 4vw 12px 4vw;
+    max-width: 340px;
+    width: 100%;
+    padding: 16px 0 12px 0;
+    margin-left: auto;
+    margin-right: auto;
   }
   .cast-img-portrait {
     width: 60vw;
