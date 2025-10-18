@@ -54,6 +54,45 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
   });
+// SION問い合わせアイコンクリックでモーダル表示
+const sionImg = document.getElementById('sion-contact-img');
+if (sionImg) {
+  sionImg.addEventListener('click', function(e) {
+    e.stopPropagation();
+    const modalBg = document.createElement('div');
+    modalBg.className = 'modal-bg';
+
+    // modalCard: 画像とキャプション
+    const modalCard = document.createElement('div');
+    modalCard.className = 'modal-card';
+
+    const modalImg = document.createElement('img');
+    modalImg.className = 'modal-img';
+    modalImg.src = sionImg.src;
+    modalImg.alt = sionImg.alt;
+
+    // キャプション
+    const caption = document.createElement('div');
+    caption.className = 'modal-caption';
+    const nameEl = document.createElement('div');
+    nameEl.className = 'modal-name';
+    nameEl.textContent = 'SION';
+    const quoteEl = document.createElement('div');
+    quoteEl.className = 'modal-quote';
+    quoteEl.textContent = '「最高の時間をご用意させていただきました。」';
+    caption.appendChild(nameEl);
+    caption.appendChild(quoteEl);
+
+    modalCard.appendChild(modalImg);
+    modalCard.appendChild(caption);
+    modalBg.appendChild(modalCard);
+    document.body.appendChild(modalBg);
+
+    modalBg.addEventListener('click', () => {
+      modalBg.remove();
+    });
+  });
+}
 });
 
     // INTERIOR IMAGE 画像クリックで拡大表示
