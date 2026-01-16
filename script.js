@@ -207,6 +207,40 @@ document.addEventListener('DOMContentLoaded', () => {
     // コンテナ中心(0,0)にいると重なって見えるため、半径分奥(-Z)に下げて回転軸を奥に置く。
     // perspective設定と合わせる。
     carouselRoot.style.transform = `translateZ(${-radius}px) rotateY(${currentAngle}deg)`;
+
+    // [立体感演出] 各カードの角度に応じた照明効果（明るさ調整）
+    carouselCards.forEach((card, index) => {
+      // 1. 各カードの絶対角度を計算（正面0度）
+      const cellAngle = theta * index;
+      let totalAngle = (currentAngle + cellAngle) % 360;
+      
+      // -180 ~ 180度に正規化
+      if (totalAngle > 180) totalAngle -= 360;
+      if (totalAngle < -180) totalAngle += 360;
+      
+      const absAngle = Math.abs(totalAngle); // 正面からのズレ(0~180)
+
+      // 2. 角度に基づく明るさ(Brightness)計算
+      // Cosカーブで正面付近を明るく、横〜奥を暗く落とす
+      // 0度(正面) => cos=1, 90度(横) => cos=0, 180度(裏) => cos=-1
+      const cosVal = Math.cos(absAngle * (Math.PI / 180));
+
+      // 基本輝度: 0.3(暗) 〜 1.0(明) の範囲で変動させる
+      // 正面へ向かうほど急激に明るく、横に向くと影に入る演出
+      let brightness = 0.3 + 0.7 * ((cosVal + 1) / 2); 
+      
+      // さらに立体感を強調するため、真横(90度)付近でのコントラストを強める
+      // スケール(奥行き感)はCSSのtransformで効いているが、補助的に適用してもよい
+      
+      card.style.filter = `brightness(${brightness * 100}%)`;
+      
+      // 裏側にあるカードのインタラクション無効化など
+      if (absAngle > 90) {
+        card.style.pointerEvents = 'none';
+      } else {
+        card.style.pointerEvents = 'auto';
+      }
+    });
   };
 
   const updateLayout = () => {
@@ -221,7 +255,7 @@ document.addEventListener('DOMContentLoaded', () => {
     rotateCarousel();
   };
 
-  const AUTO_SPEED = -0.08; // 自動回転速度（逆回転）
+  const AUTO_SPEED = -0.04; // 自動回転速度（逆回転）
 
   const autoRotate = () => {
     // ドラッグ中はループさせない（onDragStartで止めているが念のため描画更新しない）
@@ -230,7 +264,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // ディレイ判定: ドラッグ終了から2秒間は純粋な慣性のみ、その後自動回転へ復帰
     const timeSinceDragEnd = Date.now() - lastDragEndTime;
 
-    if (timeSinceDragEnd < 2000) {
+    if (timeSinceDragEnd < 1500) {
       // 2秒以内: 減衰のみ（通常の慣性）
       velocity *= 0.95;
     } else {
@@ -276,9 +310,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Mouse
   carouselContainer.addEventListener('mousedown', e => {
-    // 画像ドラッグ防止
-    // e.preventDefault(); // ここでするとinput等に触れないが今回は画像MainなのでOKか?
-    // とりあえずなしで開始
+    e.preventDefault(); // 画像のドラッグ動作などを無効化して、カルーセル操作を優先
     onDragStart(e.clientX);
   });
   window.addEventListener('mousemove', e => {
