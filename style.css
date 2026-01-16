@@ -701,3 +701,64 @@ footer a:hover {
     font-size: 0.95rem;
   }
 }
+
+/* --- 3D Carousel Styles --- */
+.cast-list-portrait {
+  display: block; /* Grid解除 */
+  position: relative;
+  width: 300px; 
+  height: 400px; /* カード高さ確保 */
+  margin: 80px auto 120px auto; /* 上下に回転余地を持たせる */
+  perspective: 1000px;
+  overflow: visible;
+  padding: 0;
+}
+
+.carousel-root {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.5s cubic-bezier(0.1, 0, 0.2, 1);
+  /* ドラッグ中はtransitionを0sにするJS制御を入れる予定 */
+}
+
+.cast-card-portrait {
+  /* 絶対配置に変更 */
+  position: absolute !important;
+  top: 0;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  min-height: 380px; 
+  /* 裏側でも表示はさせるが、暗くするなどの処理はJSまたはCSSで */
+  backface-visibility: hidden; 
+  opacity: 0.95;
+  user-select: none;
+  /* 既存Hoverエフェクトの上書き・無効化 */
+  transition: opacity 0.3s;
+  animation: none;
+}
+
+/* スマホ表示の上書き */
+@media (max-width: 700px) {
+  .cast-list-portrait {
+    width: 260px;
+    height: 360px;
+    margin: 60px auto 100px auto;
+    perspective: 800px;
+    display: block; /* Grid上書き */
+    grid-template-columns: none;
+    gap: 0;
+  }
+  .cast-card-portrait {
+    width: 100%;
+    margin: 0 auto;
+    padding: 16px 0;
+  }
+}

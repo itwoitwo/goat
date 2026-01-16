@@ -174,3 +174,155 @@ if (sionImg) {
     });
   
     // CSSで .visible を使った追加アニメーションを有効化
+
+// 3Dカルーセル（スマホ・PC対応）
+document.addEventListener('DOMContentLoaded', () => {
+  const carouselContainer = document.querySelector('.cast-list-portrait');
+  const carouselRoot = document.querySelector('.carousel-root');
+  const carouselCards = Array.from(document.querySelectorAll('.cast-card-portrait'));
+
+  if (!carouselContainer || !carouselRoot || carouselCards.length === 0) return;
+
+  // -- 変数定義 --
+  const cardCount = carouselCards.length;
+  const theta = 360 / cardCount;
+  let radius = 0;
+  let currentAngle = 0;
+  
+  let isDragging = false;
+  let startX = 0;
+  let lastX = 0;
+  let currentX = 0;
+  let velocity = 0;
+  let rafId = null;
+  let lastDragEndTime = 0;
+
+  // -- 関数 --
+
+  const rotateCarousel = () => {
+    // 視点調整: 
+    // コンテナ中心(0,0)にいると重なって見えるため、半径分奥(-Z)に下げて回転軸を奥に置く。
+    // perspective設定と合わせる。
+    carouselRoot.style.transform = `translateZ(${-radius}px) rotateY(${currentAngle}deg)`;
+  };
+
+  const updateLayout = () => {
+    const cardWidth = carouselCards[0].offsetWidth || 300; 
+    // 半径計算 (カード幅 / 2) / tan(PI / n) * 係数(隙間)
+    radius = Math.round( (cardWidth / 2) / Math.tan( Math.PI / cardCount ) * 1.2 );
+
+    carouselCards.forEach((card, index) => {
+      const cellAngle = theta * index;
+      card.style.transform = `rotateY(${cellAngle}deg) translateZ(${radius}px)`;
+    });
+    rotateCarousel();
+  };
+
+  const AUTO_SPEED = -0.08; // 自動回転速度（逆回転）
+
+  const autoRotate = () => {
+    // ドラッグ中はループさせない（onDragStartで止めているが念のため描画更新しない）
+    if (isDragging) return;
+
+    // ディレイ判定: ドラッグ終了から2秒間は純粋な慣性のみ、その後自動回転へ復帰
+    const timeSinceDragEnd = Date.now() - lastDragEndTime;
+
+    if (timeSinceDragEnd < 2000) {
+      // 2秒以内: 減衰のみ（通常の慣性）
+      velocity *= 0.95;
+    } else {
+      // 2秒経過後: 自動回転速度へ向けてLerp
+      velocity = velocity * 0.95 + AUTO_SPEED * 0.05;
+    }
+
+    currentAngle += velocity;
+    rotateCarousel();
+    rafId = requestAnimationFrame(autoRotate);
+  };
+
+  const onDragStart = (x) => {
+    isDragging = true;
+    startX = x;
+    lastX = x;
+    currentX = x; // 初期化
+    velocity = 0;
+    if (rafId) cancelAnimationFrame(rafId);
+    carouselRoot.style.transition = 'none';
+  };
+
+  const onDragMove = (x) => {
+    if (!isDragging) return;
+    currentX = x;
+    const dx = currentX - lastX;
+    lastX = currentX;
+    // 回転感度
+    currentAngle += dx * 0.4;
+    velocity = dx * 0.4;
+    rotateCarousel();
+  };
+
+  const onDragEnd = () => {
+    if (!isDragging) return;
+    isDragging = false;
+    lastDragEndTime = Date.now(); // 終了時刻を記録
+    // 自動回転再開（慣性を引き継ぐ）
+    autoRotate();
+  };
+
+  // -- イベントリスナー --
+
+  // Mouse
+  carouselContainer.addEventListener('mousedown', e => {
+    // 画像ドラッグ防止
+    // e.preventDefault(); // ここでするとinput等に触れないが今回は画像MainなのでOKか?
+    // とりあえずなしで開始
+    onDragStart(e.clientX);
+  });
+  window.addEventListener('mousemove', e => {
+    if (isDragging) {
+        e.preventDefault(); 
+        onDragMove(e.clientX);
+    }
+  });
+  window.addEventListener('mouseup', onDragEnd);
+
+  // Touch
+  carouselContainer.addEventListener('touchstart', e => {
+    onDragStart(e.touches[0].clientX);
+  }, { passive: true });
+
+  window.addEventListener('touchmove', e => {
+    if (isDragging) {
+        // 横スクロールとして処理されるよう、縦スクロールをブロックするかはUX次第
+        // ここでは親切心でブロックしない(passive: true相当)とブラウザバック暴発するかも
+        // ただし passive: false を指定するには addEventListenerのオプションが必要
+        // React等なら preventDefault() できるが。
+        // ここでは簡易実装。
+        onDragMove(e.touches[0].clientX);
+    }
+  }); // passive default
+  
+  window.addEventListener('touchend', onDragEnd);
+
+  // クリック判定 (ドラッグ操作後のclickイベントを無効化)
+  carouselCards.forEach(card => {
+    card.addEventListener('click', e => {
+       // isDraggingはfalseになっている(mouseup/touchend後なので)
+       // なので移動距離で判定
+       const dist = Math.abs(currentX - startX);
+       if (dist > 10) { // 遊びを持たせる
+         e.stopPropagation();
+         e.preventDefault();
+       }
+    }, true); // capture
+  });
+
+  // 初期化
+  window.addEventListener('resize', updateLayout);
+  // 画像ロード安定待ち
+  setTimeout(() => {
+    updateLayout();
+    autoRotate(); // 自動回転開始
+  }, 100);
+  setTimeout(updateLayout, 500); 
+});
