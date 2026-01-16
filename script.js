@@ -328,14 +328,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   window.addEventListener('touchmove', e => {
     if (isDragging) {
-        // 横スクロールとして処理されるよう、縦スクロールをブロックするかはUX次第
-        // ここでは親切心でブロックしない(passive: true相当)とブラウザバック暴発するかも
-        // ただし passive: false を指定するには addEventListenerのオプションが必要
-        // React等なら preventDefault() できるが。
-        // ここでは簡易実装。
+        if (e.cancelable) { e.preventDefault(); }
         onDragMove(e.touches[0].clientX);
     }
-  }); // passive default
+  }, { passive: false });
   
   window.addEventListener('touchend', onDragEnd);
 
