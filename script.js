@@ -187,7 +187,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const cardCount = carouselCards.length;
   const theta = 360 / cardCount;
   let radius = 0;
-  let currentAngle = 0;
+  
+  // 初期位置をランダムで決定
+  const initialIndex = Math.floor(Math.random() * cardCount);
+  let currentAngle = -1 * theta * initialIndex; 
   
   let isDragging = false;
   let startX = 0;
