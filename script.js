@@ -255,7 +255,7 @@ document.addEventListener('DOMContentLoaded', () => {
     rotateCarousel();
   };
 
-  const AUTO_SPEED = -0.04; // 自動回転速度（逆回転）
+  const AUTO_SPEED = -0.1; // 自動回転速度（逆回転）
 
   const autoRotate = () => {
     // ドラッグ中はループさせない（onDragStartで止めているが念のため描画更新しない）
