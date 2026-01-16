@@ -1,11 +1,26 @@
 body {
-  background:
-    linear-gradient(135deg, #181820cc 0%, #23232bcc 100%),
-    url('img/ad.jpg') center center/cover no-repeat fixed;
+  /* iPhone等の固定背景問題回避のため、背景指定を疑似要素へ移動 */
+  /* background: linear-gradient(135deg, #181820cc 0%, #23232bcc 100%), url('img/ad.jpg') center center/cover no-repeat fixed; */
+  background-color: #181820; /* fallback */
   color: #e6e6fa;
   font-family: Cambria, serif;
   margin: 0;
   min-height: 100vh;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0; 
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  background:
+    linear-gradient(135deg, #181820cc 0%, #23232bcc 100%),
+    url('img/ad.jpg') center center/cover no-repeat;
+  /* iOSでのちらつき対策 */
+  will-change: transform;
 }
 
 header {
