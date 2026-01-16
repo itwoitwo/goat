@@ -763,9 +763,9 @@ footer a:hover {
 /* スマホ表示の上書き */
 @media (max-width: 700px) {
   .cast-list-portrait {
-    width: 260px;
-    height: 360px;
-    margin: 60px auto 100px auto;
+    width: 240px; /* 少し狭める */
+    height: 340px; /* 高さを抑える */
+    margin: 50px auto 90px auto;
     perspective: 800px;
     display: block; /* Grid上書き */
     grid-template-columns: none;
@@ -774,6 +774,13 @@ footer a:hover {
   .cast-card-portrait {
     width: 100%;
     margin: 0 auto;
-    padding: 16px 0;
+    padding: 0;
+    height: 100%;      /* 親の高さに合わせる */
+    min-height: 100%;
+  }
+  .cast-img-portrait {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 }
